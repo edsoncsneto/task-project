@@ -1,20 +1,20 @@
 import { Injectable } from "@nestjs/common";
 import { Knex } from "knex";
-import { CreateAppUserDTO } from "../dto/create-app-user.dto";
+import { CreateTaskDTO } from "../dto/create-task.dto";
 import { connection } from "../../../config/sql";
 
 @Injectable()
-export class AppUserRepository {
+export class TaskRepository {
     private readonly dataBase: Knex;
 
     constructor() {
         this.dataBase = connection;
     }
 
-    async save(appUser: CreateAppUserDTO): Promise<number> {
+    async save(task: CreateTaskDTO): Promise<number> {
         try {
-            const result = await this.dataBase("app_users")
-                .insert(appUser)
+            const result = await this.dataBase("task")
+                .insert(task)
                 .returning('id');
             return result[0].id;
         } catch (err) {

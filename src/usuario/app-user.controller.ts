@@ -2,7 +2,7 @@ import { Controller, Injectable, Post, Body } from "@nestjs/common";
 import { AppUserService } from "./app-user.service";
 import { CreateAppUserDTO } from "./dto/create-app-user.dto";
 
-@Controller('/appuser')
+@Controller('/appusers')
 @Injectable()
 export class AppUserController {
     constructor(
@@ -10,7 +10,7 @@ export class AppUserController {
     ){}
 
     @Post()
-    async saveAppUser(@Body() body: CreateAppUserDTO): Promise<CreateAppUserDTO> {
+    async saveAppUser(@Body() body: CreateAppUserDTO): Promise<{ id: number, name: string, email: string, password: string}> {
         const id = await this.appUserService.save(body);
         return { id, ...body};
     }

@@ -6,7 +6,7 @@ export const connection = knex({
 	connection: {
 	  host: '127.0.0.1',
 	  user: 'postgres',
-	  password: 'root',
+	  password: '1234',
 	  database: 'task-project',
 	  port: 5432
 	},

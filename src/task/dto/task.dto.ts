@@ -3,7 +3,10 @@
 import { IsNotEmpty, IsNumber, IsOptional, IsDate, IsEnum } from 'class-validator';
 import { TaskStatus } from '../enum/task-status.enum'; // Importar o enum Status se estiver em um arquivo separado
 
-export class CreateTaskDTO {
+export class TaskDTO {
+  @IsNumber()
+  id?: number;
+
   @IsNotEmpty()
   @IsNumber()
   id_app_user: number;
@@ -24,3 +27,4 @@ export class CreateTaskDTO {
   @IsEnum(TaskStatus)
   status?: TaskStatus;
 }
+

@@ -10,9 +10,9 @@ export class AppUserController {
     ){}
 
     @Post()
-    async saveAppUser(@Body() body: CreateAppUserDTO): Promise<{ id: number, name: string, email: string, password: string}> {
-        const id = await this.appUserService.save(body);
-        return { id, ...body};
+    async saveAppUser(@Body() body: CreateAppUserDTO): Promise<ListAppUserDTO> {
+        const user = await this.appUserService.save(body);
+        return user;
     }
 
     @Get()

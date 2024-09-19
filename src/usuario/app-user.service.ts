@@ -1,7 +1,7 @@
-import { Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from "@nestjs/common";
+import { ConflictException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { AppUserRepository } from "./repository/app-user.repository";
 import { CreateAppUserDTO, ListAppUserDTO, UpdateAppUserDTO } from "./dto/app-user.dto";
-import { LoginAppUserDTO } from "src/auth/dto/auth.dto"; 
+import { LoginAuthDTO } from "src/auth/dto/auth.dto"; 
 import * as bcrypt from 'bcrypt';
 import { randomInt } from 'node:crypto';
 
@@ -17,12 +17,16 @@ export class AppUserService {
         return passwordHash;
     }
 
-    async save(appUser: CreateAppUserDTO): Promise<number> {
+    async save(appUser: CreateAppUserDTO): Promise<ListAppUserDTO> {
+        const verifyUser = await this.appUserRepository.findByEmail(appUser.email);
+        if (verifyUser) {
+            throw new ConflictException('Usuário já cadastrado.');
+        }
         appUser.password = await this.generatePassword(appUser.password);
 
         try{
-            const id = await this.appUserRepository.save(appUser);
-            return id;
+            const user = await this.appUserRepository.save(appUser);
+            return user;
         } catch (e) {
             throw new InternalServerErrorException(e.message);
         }

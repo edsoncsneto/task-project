@@ -11,11 +11,11 @@ export class AppUserRepository {
         this.dataBase = connection;
     }
 
-    async save(appUser: CreateAppUserDTO): Promise<number> {
+    async save(appUser: CreateAppUserDTO): Promise<ListAppUserDTO> {
         try {
             const result = await this.dataBase("app_user")
                 .insert(appUser)
-                .returning('id');
+                .returning('*');
             return result[0].id;
         } catch (e) {
             throw new Error('Erro no repositório: ' + e.message);
